@@ -1,6 +1,3 @@
-
-
-
 import mongoose, { Schema } from "mongoose";
 const meetingSchema = new Schema(
     {

@@ -31,7 +31,7 @@ let timeOnline = {}
             }
 
             if(messages[path] !== undefined){
-                for(let a = 0 ; a< message[path].length; ++a){
+                for(let a = 0 ; a< messages[path].length; ++a){
                     io.to(socket.id).emit("chat-message",messages[path][a]['data'],
                         messages[path][a]['sender'],messages[path][a]['socket-id-sender']
                     )
@@ -40,18 +40,18 @@ let timeOnline = {}
 
         })
 
-        socket.on("signal",(toId,messages) =>{
-            io.to(toId).emit("signal",socket.id,messages);
+        socket.on("signal",(toId,message) =>{
+            io.to(toId).emit("signal",socket.id,message);
         })
         socket.on("chat-messages",(data,sender)=>{
             
             const [matchingRoom, found] = Object.entries(connections)
-            .reduce(([matchingRoom, isfound],[roomKey,roomValue])=>{
+            .reduce(([room, isFound],[roomKey,roomValue])=>{
 
-                if(!isfound && roomValue.includes(socket.id)){
+                if(!isFound && roomValue.includes(socket.id)){
 
                 }
-                return [room , isfound];
+                return [room , isFound];
             }, ['',false]);
 
             if(found === true){
@@ -59,7 +59,7 @@ let timeOnline = {}
                 messages[matchingRoom] = []
               }
               messages[matchingRoom].push({'sender':sender,"data":data,"socket-id-sender":socket.id})
-              console.log("message",key ,":",sender,data)
+              console.log("message",matchingRoom ,":",sender,data)
 
               connections[matchingRoom].forEach((elem)=>{
                 io.to(elem).emit("chat-message",data,sender,socket.id)

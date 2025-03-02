@@ -126,6 +126,7 @@ export default function VideoMeetComponent() {
                 let tracks = localVideoref.current.srcObject.getTracks()
                 tracks.forEach(track => track.stop())
             } catch (e) { console.log(e) }
+
             let blackSilence = (...args) => new MediaStream([black(...args), silence()])
             window.localStream = blackSilence()
             localVideoref.current.srcObject = window.localStream
@@ -340,7 +341,7 @@ export default function VideoMeetComponent() {
         console.log(socketRef.current);
         socketRef.current.emit('chat-message', message, username)
         setMessage("");
-        // this.setState({ message: "", sender: username })
+        //  this.setState({ message: "", sender: username })
     }
     
     let connect = () => {
